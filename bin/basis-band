@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'basis-band'
+
+b = BasisBand.new(ARGV[0])
+puts b.data_for_day(ARGV[1])
