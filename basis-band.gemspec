@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
   s.test_files = Dir["{test}/**/*.rb"]
   s.executables = ['basis-band']
+  s.add_runtime_dependency 'json'
   s.homepage = 'http://github.com/mikerowehl/basis-band'
   s.license = 'MIT'
 end
