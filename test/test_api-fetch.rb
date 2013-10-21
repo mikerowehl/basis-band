@@ -7,20 +7,20 @@ class ApiFetchTest < Test::Unit::TestCase
   end
 
   def test_defaults_url
-    url = @f.get_day('123user456', '1999-12-30')
+    url = @f.url('123user456', '1999-12-30', true, true, [])
     assert url.include?('start_date=1999-12-30')
     assert url.include?('summary=true')
     assert url.include?('bodystates=true')
   end
 
   def test_filter_url
-    url = @f.get_day('123user456', '1999-12-30', true, false)
+    url = @f.url('123user456', '1999-12-30', true, false, [])
     assert url.include?('summary=true')
     assert url.include?('bodystates=false')
   end
 
   def test_metrics_url
-    url = @f.get_day('123user456', '1999-12-30', true, false, [:skin_temp, :steps])
+    url = @f.url('123user456', '1999-12-30', true, false, [:skin_temp, :steps])
     assert url.include?('heartrate=true')
     assert url.include?('steps=false')
     assert url.include?('calories=true')
