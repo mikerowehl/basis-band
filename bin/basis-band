@@ -1,6 +1,44 @@
 #!/usr/bin/env ruby
 
 require 'basis-band'
+require 'optparse'
 
-b = BasisBand.new(ARGV[0])
-puts b.data_for_day(ARGV[1])
+def samples_to_csv(samples)
+  lines = []
+  cols = samples.first.keys
+  lines << cols.join(',')
+  samples.each do |s|
+    lines << cols.map{|c| s[c]}.join(",")
+  end
+  lines
+end
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: basis-band [options]"
+  opts.on("-u", "--userid [USERID]", "User ID from mybasis.com") do |u|
+    options[:userid] = u
+  end
+  opts.on("-d", "--date [DATE]", "Date to fetch from mybasis.com") do |d|
+    options[:date] = d
+  end
+  opts.on("-c", "--[no-]csv", "Output CSV format") do |c|
+    options[:csv] = c
+  end
+end.parse!
+
+if options[:userid] and options[:date]
+  b = BasisBand.new(options[:userid])
+  raw = b.data_for_day(options[:date])
+else
+  raw = $stdin.read
+end
+
+if options[:csv]
+  m = ApiResponseModel.new(raw)
+  lines = samples_to_csv(m.samples_by_minute)
+  puts lines.join("\n")
+else
+  puts raw
+end
