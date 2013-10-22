@@ -17,8 +17,13 @@ class ApiResponseModel
     res
   end
 
+  def num_samples
+    m = @json["metrics"].keys.first
+    @json["metrics"][m]["values"].length
+  end
+
   def samples_by_minute
-    (0...1440).map { |x|
+    (0...num_samples).map { |x|
       hash_for_minute(x)
     }
   end
