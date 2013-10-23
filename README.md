@@ -21,10 +21,10 @@ If you want the metric data as CSV instead of raw JSON:
 
 ```
 > miker $ basis-band -c xxxxx -d 2013-10-14 -c
-t,skin_temp,heartrate,air_temp,calories,gsr,steps
-2013/10/14 00:00:00,93.2,69,92.3,1.3,0.00128,0
-2013/10/14 00:01:00,93.3,68,92.3,1.3,0.00136,0
-2013/10/14 00:02:00,94.3,68,92.3,1.3,0.00156,0
+t,state,skin_temp,heartrate,air_temp,calories,gsr,steps
+2013/10/01 00:00:00,inactive,83.8,58,80.6,1.3,0.000439,0
+2013/10/01 00:01:00,inactive,83.8,62,80.6,1.4,0.000402,0
+2013/10/01 00:02:00,inactive,83.8,64,80.6,1.4,0.000464,0
 ...
 ```
 
@@ -33,9 +33,9 @@ input and transform it to CSV:
 
 ```
 > miker $ basis-band -c < cache/2013-10-14.json
-t,skin_temp,heartrate,air_temp,calories,gsr,steps
-2013/10/14 00:00:00,93.2,69,92.3,1.3,0.00128,0
-2013/10/14 00:01:00,93.3,68,92.3,1.3,0.00136,0
-2013/10/14 00:02:00,94.3,68,92.3,1.3,0.00156,0
+t,state,skin_temp,heartrate,air_temp,calories,gsr,steps
+2013/10/01 00:00:00,inactive,83.8,58,80.6,1.3,0.000439,0
+2013/10/01 00:01:00,inactive,83.8,62,80.6,1.4,0.000402,0
+2013/10/01 00:02:00,inactive,83.8,64,80.6,1.4,0.000464,0
 ...
 ```
