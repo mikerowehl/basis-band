@@ -1,13 +1,23 @@
 # Basis API Access Gem
 
-This is extremely alpha quality, based on the existing PHP example at
-[https://github.com/btroia/basis-data-export](https://github.com/btroia/basis-data-export).
-That example includes instructions for finding your userid.
-
 Includes a command line tool that can be used to either capture the raw JSON
 responses from app.mybasis.com, or to convert the metrics from the API
-responses into CSV. Assuming your userid is represented by xxxxx, here are
-some simple examples.
+responses into CSV.
+
+First off you need to find your userid. The command line tool now provides an
+option to output your userid given a username and password on the command line.
+Just pass the username and password joined with a colon (:) using the -l
+option and you'll get your userid back as output. Assuming your username is
+'mikerowehl@gmail.com' and your password is 'pppppp' the command would look
+like this:
+
+```
+> miker $ basis-band -l mikerowehl@gmail.com:pppppp
+1234567890abcdef12345678
+```
+
+In this example the userid returned is '1234567890abcdef12345678'. In the rest
+of the examples the userid is abbreviated to 'xxxxx'.
 
 If you pass -u and -d options the raw text will be fetched from the API and
 output on standard output:
@@ -39,3 +49,8 @@ t,state,skin_temp,heartrate,air_temp,calories,gsr,steps
 2013/10/01 00:02:00,inactive,83.8,64,80.6,1.4,0.000464,0
 ...
 ```
+
+For additional information see the PHP example at
+[https://github.com/btroia/basis-data-export](https://github.com/btroia/basis-data-export).
+That example includes instructions for finding your userid.
+

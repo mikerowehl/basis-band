@@ -1,4 +1,5 @@
 require 'basis-band/api-fetch'
+require 'basis-band/api-auth'
 require 'basis-band/api-response-model'
 
 class BasisBand
