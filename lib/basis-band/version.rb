@@ -1,3 +1,3 @@
-module BasisBand
-  VERSION = '0.0.3'
+module BasisBandMeta
+  VERSION = '0.0.4'
 end

@@ -16,17 +16,17 @@ end
 options = {}
 
 OptionParser.new do |opts|
-  opts.banner = "Usage: basis-band [options]"
-  opts.on("-u", "--userid [USERID]", "User ID from mybasis.com") do |u|
+  opts.banner = "basis-band gem v#{BasisBandMeta::VERSION}\nUsage: basis-band [options]"
+  opts.on("-u", "--userid USERID", "User ID from mybasis.com") do |u|
     options[:userid] = u
   end
-  opts.on("-d", "--date [DATE]", "Date to fetch from mybasis.com") do |d|
+  opts.on("-d", "--date DATE", "Date to fetch from mybasis.com") do |d|
     options[:date] = d
   end
   opts.on("-c", "--[no-]csv", "Output CSV format") do |c|
     options[:csv] = c
   end
-  opts.on("-l", "--login [username:password]", "Login and print user id") do |l|
+  opts.on("-l", "--login username:password", "Login and print user id") do |l|
     options[:login] = l
   end
 end.parse!
