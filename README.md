@@ -1,8 +1,12 @@
 # Basis API Access Gem
 
+[![Gem Version](https://badge.fury.io/rb/basis-band.png)](http://badge.fury.io/rb/basis-band)
+
 Includes a command line tool that can be used to either capture the raw JSON
 responses from app.mybasis.com, or to convert the metrics from the API
 responses into CSV.
+
+## Usage
 
 First off you need to find your userid. The command line tool now provides an
 option to output your userid given a username and password on the command line.
