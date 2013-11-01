@@ -32,6 +32,9 @@ OptionParser.new do |opts|
   opts.on("-l", "--login username:password", "Login and print user id") do |l|
     options[:login] = l
   end
+  opts.on("-s", "--summary", "Summarize all the data from the cache") do |s|
+    options[:summary] = s
+  end
 end.parse!
 
 if options[:login]
@@ -41,11 +44,20 @@ if options[:login]
   exit
 end
 
-if options[:userid] and options[:date]
-  b = BasisBand.new(options[:userid])
-  if options[:cachedir]
-    b.set_cache_dir(options[:cachedir])
+b = BasisBand.new(options[:userid])
+if options[:cachedir]
+  b.set_cache_dir(options[:cachedir])
+end
+
+if options[:summary]
+  all = b.data_for_all
+  all.each do |k,v|
+    puts "Data for day #{k}"
   end
+  exit
+end
+
+if options[:userid] and options[:date]
   raw = b.data_for_day(options[:date])
 else
   raw = $stdin.read

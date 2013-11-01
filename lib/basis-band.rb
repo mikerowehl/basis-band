@@ -22,8 +22,20 @@ class BasisBand
     r
   end
 
+  def data_for_all
+    all = all_cache_files.collect do |f|
+      d = File.basename(f, ".json")
+      [d, cached_value_for_day(d)]
+    end
+    Hash[all]
+  end
+
   def cache_filename(date)
     File.join(@cache_dir, date + ".json")
+  end
+
+  def all_cache_files()
+    Dir[File.join(@cache_dir, "*.json")]
   end
 
   def cached_value_for_day(date)
