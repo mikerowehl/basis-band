@@ -38,4 +38,16 @@ class ApiResponseModel
       hash_for_minute(x)
     }
   end
+
+  def metric_summary(metric)
+    {"avg" => @json["metrics"][metric]["avg"]}
+  end
+
+  def summary
+    res = {}
+    for m in @json["metrics"].keys
+      res[m] = metric_summary(m)
+    end
+    res
+  end
 end

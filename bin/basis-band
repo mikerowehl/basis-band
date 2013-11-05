@@ -53,6 +53,8 @@ if options[:summary]
   all = b.data_for_all
   all.each do |k,v|
     puts "Data for day #{k}"
+    t = ApiResponseModel.new(v).summary
+    puts "  average air_temp = #{t["air_temp"]["avg"]}"
   end
   exit
 end
