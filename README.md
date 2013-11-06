@@ -8,20 +8,24 @@ responses into CSV.
 
 ## Usage
 
-First off you need to find your userid. The command line tool now provides an
-option to output your userid given a username and password on the command line.
-Just pass the username and password joined with a colon (:) using the -l
-option and you'll get your userid back as output. Assuming your username is
+There are two different versions of the API available at app.mybasis.com. The
+V1 API (which holds most of the detailed data about heartrate and steps) uses a
+user id, while the V2 API (which holds information about activities like
+walking, running or biking state) uses an access token. You can use the -l
+option to the command line tool to dump out both values.
+Just pass the username and password joined with a colon (:).
+Assuming your username is
 'mikerowehl@gmail.com' and your password is 'pppppp' the command would look
 like this:
 
 ```
 > miker $ basis-band -l mikerowehl@gmail.com:pppppp
-1234567890abcdef12345678
+ID for V1 api: 1234567890abcdef12345678
+token for V2 api: abcdef1234567890abcdef1234567890
 ```
 
-In this example the userid returned is '1234567890abcdef12345678'. In the rest
-of the examples the userid is abbreviated to 'xxxxx'.
+In this example the userid returned is '1234567890abcdef12345678' and the 
+token is 'abcdef1234567890abcdef1234567890'.
 
 If you pass -u and -d options the raw text will be fetched from the API and
 output on standard output:
@@ -54,7 +58,29 @@ t,state,skin_temp,heartrate,air_temp,calories,gsr,steps
 ...
 ```
 
-For additional information see the PHP example at
-[https://github.com/btroia/basis-data-export](https://github.com/btroia/basis-data-export).
-That example includes instructions for finding your userid.
+If you want the activity info for a given day pass in the access token using
+-t and the date you want with -d:
 
+```
+> miker $ basis-band -t abcdef1234567890abcdef1234567890 -d 2013-11-05 | python -mjson.tool
+{
+    "content": {
+        "activities": [
+            {
+                "actual_seconds": 1323,
+                "calories": 118.8,
+                "end_time": {
+                    "iso": "2013-11-05T22:38:25Z",
+                    "time_zone": {
+                        "name": "America/Los_Angeles",
+                        "offset": -480
+                    },
+                    "timestamp": 1383691105
+                },
+                "heart_rate": {
+                    "avg": null,
+                    "max": null,
+                    "min": null
+                },
+...
+```

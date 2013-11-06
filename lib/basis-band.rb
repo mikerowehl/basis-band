@@ -60,4 +60,10 @@ class BasisBand
     end
     raw
   end
+
+  def fetch_activities_for_day(date, token)
+    f = ApiFetch.new()
+    raw = f.get_activities(token, date)
+    raw
+  end
 end

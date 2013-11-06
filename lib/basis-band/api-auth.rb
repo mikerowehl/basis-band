@@ -7,7 +7,7 @@ class ApiAuth
 
   def login(username, password)
     token = auth_request(username, password)
-    get_user_id(token)
+    [token, get_user_id(token)]
   end
 
   def auth_request(username, password)

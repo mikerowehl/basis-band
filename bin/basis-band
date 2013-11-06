@@ -35,12 +35,16 @@ OptionParser.new do |opts|
   opts.on("-s", "--summary", "Summarize all the data from the cache") do |s|
     options[:summary] = s
   end
+  opts.on("-t", "--token TOKEN", "Token for v2 API access") do |t|
+    options[:token] = t
+  end
 end.parse!
 
 if options[:login]
   (u,p) = options[:login].split(":", 2)
-  a = ApiAuth.new
-  puts a.login(u, p)
+  token, id = ApiAuth.new.login(u, p)
+  puts "ID for V1 api: #{id}"
+  puts "token for V2 api: #{token}"
   exit
 end
 
@@ -61,6 +65,8 @@ end
 
 if options[:userid] and options[:date]
   raw = b.data_for_day(options[:date])
+elsif options[:token] and options[:date]
+  raw = b.fetch_activities_for_day(options[:date], options[:token])
 else
   raw = $stdin.read
 end

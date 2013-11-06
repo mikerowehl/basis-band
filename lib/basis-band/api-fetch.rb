@@ -31,6 +31,10 @@ class ApiFetch
     "https://app.mybasis.com/api/v1/chart/#{userid}.json?#{f}&#{m}"
   end
 
+  def activities_url(date)
+    "https://app.mybasis.com/api/v2/users/me/days/#{date}/activities?expand=activities&type=run,walk,bike"
+  end
+
   def https_fetch(url)
     u = URI.parse(url)
     http = Net::HTTP.new(u.host, u.port)
@@ -40,8 +44,23 @@ class ApiFetch
     http.request(request).body
   end
 
+  def https_fetch_v2(url, token)
+    u = URI.parse(url)
+    http = Net::HTTP.new(u.host, u.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    request = Net::HTTP::Get.new(u.request_uri)
+    request.add_field('Cookie', "access_token=#{token}; scope=login")
+    http.request(request).body
+  end
+
   def get_day(userid, date, summary = true, body_states = true, skip_metrics = [])
     res = https_fetch(url(userid, date, summary, body_states, skip_metrics))
+    res
+  end
+
+  def get_activities(token, date)
+    res = https_fetch_v2(activities_url(date), token)
     res
   end
 end
