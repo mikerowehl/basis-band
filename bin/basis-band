@@ -2,6 +2,7 @@
 
 require 'basis-band'
 require 'optparse'
+require 'yaml'
 
 def samples_to_csv(samples)
   lines = []
@@ -14,6 +15,10 @@ def samples_to_csv(samples)
 end
 
 options = {}
+options_file = File.expand_path('.basis-band', ENV['HOME'])
+if File.exist?(options_file)
+  options = YAML::load_file options_file
+end
 
 OptionParser.new do |opts|
   opts.banner = "basis-band gem v#{BasisBandMeta::VERSION}\nUsage: basis-band [options]"

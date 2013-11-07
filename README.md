@@ -84,3 +84,16 @@ If you want the activity info for a given day pass in the access token using
                 },
 ...
 ```
+
+## Optional
+
+The command line tool parses the ~/.basis-band file as YAML to pick up
+persistent options. So if you want to avoid having to keep passing the userid
+on the command line you can just add it to the options file:
+
+```
+---
+:userid: '1234567890abcdef12345678'
+```
+
+And that value will be used as if you passed a -u to the command.
