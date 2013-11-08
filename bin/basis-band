@@ -17,7 +17,10 @@ end
 options = {}
 options_file = File.expand_path('.basis-band', ENV['HOME'])
 if File.exist?(options_file)
-  options = YAML::load_file options_file
+  o = YAML::load_file options_file
+  if not o.nil?
+    options = YAML::load_file options_file
+  end
 end
 
 OptionParser.new do |opts|
@@ -69,9 +72,9 @@ if options[:summary]
 end
 
 if options[:userid] and options[:date]
-  raw = b.data_for_day(options[:date])
+  raw = b.metrics_for_day(options[:date])
 elsif options[:token] and options[:date]
-  raw = b.fetch_activities_for_day(options[:date], options[:token])
+  raw = b.activities_for_day(options[:token], options[:date])
 else
   raw = $stdin.read
 end

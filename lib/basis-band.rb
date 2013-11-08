@@ -14,34 +14,58 @@ class BasisBand
     @cache_dir = dir
   end
 
-  def data_for_day(date)
-    r = cached_value_for_day(date)
-    if !r
-      r = fetch_value_for_day(date)
-    end
-    r
+  def metrics_for_day(date)
+    with_cache(metrics_cache_filename(date)) { |filename|
+      fetch_metrics_value(date, filename)
+    }
   end
 
-  def data_for_all
-    all = all_cache_files.collect do |f|
-      d = File.basename(f, ".json")
-      [d, cached_value_for_day(d)]
-    end
-    Hash[all]
+  def activities_for_day(token, date)
+    with_cache(activities_cache_filename(date)) { |filename|
+      fetch_activities_value(token, date, filename)
+    }
   end
 
-  def cache_filename(date)
-    File.join(@cache_dir, date + ".json")
+  def metrics_cache_filename(date)
+    File.join(@cache_dir, date + "_metrics.json")
   end
 
-  def all_cache_files()
-    Dir[File.join(@cache_dir, "*.json")]
+  def activities_cache_filename(date)
+    File.join(@cache_dir, date + "_activities.json")
   end
 
-  def cached_value_for_day(date)
+  def metrics_cache_files()
+    Dir[File.join(@cache_dir, "*_metrics.json")]
+  end
+
+  def activities_cache_files()
+    Dir[File.join(@cache_dir, "*_activities.json")]
+  end
+
+  def metrics_for_all
+    metrics = metrics_cache_files.collect { |f|
+      date = File.basename(f, "_metrics.json")
+      [d, cached_value(f)]
+    }
+    Hash[metrics]
+  end
+
+  def activities_for_all
+    activities = activities_cache_files.collect { |f|
+      date = File.basename(f, "_activities.json")
+      [d, cached_value(f)]
+    }
+    Hash[activities]
+  end
+
+  def with_cache(filename)
+    cached_value(filename) || yield(filename)
+  end
+
+  def cached_value(filename)
     raw = nil
     begin
-      File.open(cache_filename(date), "r") { |f|
+      File.open(filename, "r") { |f|
         raw = f.read
       }
     rescue
@@ -50,20 +74,27 @@ class BasisBand
     raw
   end
 
-  def fetch_value_for_day(date)
+  def fetch_result_w_cache(filename)
     f = ApiFetch.new()
-    raw = f.get_day(@userid, date)
-    if raw && @cache_dir
-      File.open(cache_filename(date), "w") { |f|
-        f.write(raw)
+    r = yield f
+    if r
+      File.open(filename, "w") { |f|
+        f.write(r)
       }
     end
-    raw
+    r
   end
 
-  def fetch_activities_for_day(date, token)
-    f = ApiFetch.new()
-    raw = f.get_activities(token, date)
-    raw
+  def fetch_metrics_value(date, filename)
+    fetch_result_w_cache(filename) { |fetch|
+      fetch.get_day_metrics(@userid, date)
+    }
   end
+
+  def fetch_activities_value(token, date, filename)
+    fetch_result_w_cache(filename) { |fetch|
+      fetch.get_day_activities(token, date)
+    }
+  end
+
 end

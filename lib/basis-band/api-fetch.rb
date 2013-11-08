@@ -54,12 +54,12 @@ class ApiFetch
     http.request(request).body
   end
 
-  def get_day(userid, date, summary = true, body_states = true, skip_metrics = [])
+  def get_day_metrics(userid, date, summary = true, body_states = true, skip_metrics = [])
     res = https_fetch(url(userid, date, summary, body_states, skip_metrics))
     res
   end
 
-  def get_activities(token, date)
+  def get_day_activities(token, date)
     res = https_fetch_v2(activities_url(date), token)
     res
   end
