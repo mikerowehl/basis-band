@@ -6,17 +6,16 @@ require 'basis-band/api-response-model'
 class BasisBand
   @cache_dir = nil
 
-  def initialize(userid)
-    @userid = userid
+  attr_accessor :api
+
+  def initialize(cache_dir)
+    @cache_dir = cache_dir
+    @api = ApiFetch.new()
   end
 
-  def set_cache_dir(dir)
-    @cache_dir = dir
-  end
-
-  def metrics_for_day(date)
+  def metrics_for_day(userid, date)
     with_cache(metrics_cache_filename(date)) { |filename|
-      fetch_metrics_value(date, filename)
+      fetch_metrics_value(userid, date, filename)
     }
   end
 
@@ -75,8 +74,7 @@ class BasisBand
   end
 
   def fetch_result_w_cache(filename)
-    f = ApiFetch.new()
-    r = yield f
+    r = yield
     if r
       File.open(filename, "w") { |f|
         f.write(r)
@@ -85,15 +83,15 @@ class BasisBand
     r
   end
 
-  def fetch_metrics_value(date, filename)
-    fetch_result_w_cache(filename) { |fetch|
-      fetch.get_day_metrics(@userid, date)
+  def fetch_metrics_value(userid, date, filename)
+    fetch_result_w_cache(filename) {
+      @api.get_day_metrics(userid, date)
     }
   end
 
   def fetch_activities_value(token, date, filename)
-    fetch_result_w_cache(filename) { |fetch|
-      fetch.get_day_activities(token, date)
+    fetch_result_w_cache(filename) {
+      @api.get_day_activities(token, date)
     }
   end
 

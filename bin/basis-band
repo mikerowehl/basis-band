@@ -14,12 +14,12 @@ def samples_to_csv(samples)
   lines
 end
 
-options = {}
+options = {:type => 'metrics'}
 options_file = File.expand_path('.basis-band', ENV['HOME'])
 if File.exist?(options_file)
   o = YAML::load_file options_file
   if not o.nil?
-    options = YAML::load_file options_file
+    options.merge!(o)
   end
 end
 
@@ -37,29 +37,18 @@ OptionParser.new do |opts|
   opts.on("-C", "--cachedir DIR", "Directory to use to cache results") do |c|
     options[:cachedir] = c
   end
-  opts.on("-l", "--login username:password", "Login and print user id") do |l|
-    options[:login] = l
-  end
   opts.on("-s", "--summary", "Summarize all the data from the cache") do |s|
     options[:summary] = s
   end
   opts.on("-t", "--token TOKEN", "Token for v2 API access") do |t|
     options[:token] = t
   end
+  opts.on("-T", "--type TYPE", "'metrics' or 'activities' (default 'metrics')") do |t|
+    options[:type] = t
+  end
 end.parse!
 
-if options[:login]
-  (u,p) = options[:login].split(":", 2)
-  token, id = ApiAuth.new.login(u, p)
-  puts "ID for V1 api: #{id}"
-  puts "token for V2 api: #{token}"
-  exit
-end
-
-b = BasisBand.new(options[:userid])
-if options[:cachedir]
-  b.set_cache_dir(options[:cachedir])
-end
+b = BasisBand.new(options[:cachedir])
 
 if options[:summary]
   all = b.data_for_all
@@ -71,9 +60,9 @@ if options[:summary]
   exit
 end
 
-if options[:userid] and options[:date]
-  raw = b.metrics_for_day(options[:date])
-elsif options[:token] and options[:date]
+if options[:type] == 'metrics'
+  raw = b.metrics_for_day(options[:userid], options[:date])
+elsif options[:type] == 'activities'
   raw = b.activities_for_day(options[:token], options[:date])
 else
   raw = $stdin.read

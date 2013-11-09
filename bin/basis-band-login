@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+require 'basis-band'
+require 'optparse'
+
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "basis-band gem v#{BasisBandMeta::VERSION}\nUsage: basis-band-login [options]"
+  opts.on("-e", "--email EMAIL", "Mandatory login for mybasis.com") do |e|
+    options[:email] = e
+  end
+  opts.on("-p", "--password PASS", "Mandatory password for mybasis.com") do |p|
+    options[:password] = p
+  end
+end.parse!
+
+token, id = ApiAuth.new.login(options[:email], options[:password])
+puts "ID for V1 api: #{id}"
+puts "token for V2 api: #{token}"
+

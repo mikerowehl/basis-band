@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email = 'mikerowehl@gmail.com'
   s.files = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
   s.test_files = Dir["{test}/**/*.rb"]
-  s.executables = ['basis-band']
+  s.executables = ['basis-band', 'basis-band-login']
   s.add_runtime_dependency 'json'
   s.homepage = 'http://github.com/mikerowehl/basis-band'
   s.license = 'MIT'
