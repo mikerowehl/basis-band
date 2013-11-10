@@ -12,7 +12,7 @@ There are two different versions of the API available at app.mybasis.com. The
 V1 API (which holds most of the detailed data about heartrate and steps) uses a
 user id, while the V2 API (which holds information about activities like
 walking, running or biking state) uses an access token. The basis-band-login
-command takes a username and password and spits out both identifiers:
+command takes a username and password and spits out both identifiers.
 Assuming your username is
 'mikerowehl@gmail.com' and your password is 'pppppp' the command would look
 like this:
