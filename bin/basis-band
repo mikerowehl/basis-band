@@ -51,11 +51,18 @@ end.parse!
 b = BasisBand.new(options[:cachedir])
 
 if options[:summary]
-  all = b.data_for_all
+  all = b.metrics_for_all
+  puts "date,air_temp,calories,gsr,heartrate,skin_temp,steps"
   all.each do |k,v|
-    puts "Data for day #{k}"
+    line = [k]
     t = ApiResponseModel.new(v).summary
-    puts "  average air_temp = #{t["air_temp"]["avg"]}"
+    line << t['air_temp']['avg']
+    line << t['calories']['avg']
+    line << t['gsr']['avg']
+    line << t['heartrate']['avg']
+    line << t['skin_temp']['avg']
+    line << t['steps']['avg']
+    puts line.join(',')
   end
   exit
 end

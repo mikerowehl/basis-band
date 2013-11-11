@@ -44,7 +44,7 @@ class BasisBand
   def metrics_for_all
     metrics = metrics_cache_files.collect { |f|
       date = File.basename(f, "_metrics.json")
-      [d, cached_value(f)]
+      [date, cached_value(f)]
     }
     Hash[metrics]
   end
