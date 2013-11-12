@@ -38,7 +38,7 @@ command line every time. Just create a file like this as ~/.basis-band:
 
 The main basis-band command requires the name of a cache directory to use.
 You can either pass it on the command line using --cachedir, or add it to the
-~/basis-band initialization file. The cache directory must exist before
+~/.basis-band initialization file. The cache directory must exist before
 running the commands.
 
 The default is to fetch metrics for a given day (expressed in YYYY-MM-DD
