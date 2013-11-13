@@ -46,6 +46,12 @@ OptionParser.new do |opts|
   opts.on("-T", "--type TYPE", "'metrics' or 'activities' (default 'metrics')") do |t|
     options[:type] = t
   end
+  opts.on("-e", "--email EMAIL", "email for login") do |e|
+    options[:email] = e
+  end
+  opts.on("-p", "--password PASSWORD", "password for login") do |p|
+    options[:password] = p
+  end
 end.parse!
 
 b = BasisBand.new(options[:cachedir])
@@ -68,8 +74,14 @@ if options[:summary]
 end
 
 if options[:type] == 'metrics'
+  if not options[:userid]
+    options[:token], options[:userid] = ApiAuth.new.login(options[:email], options[:password])
+  end
   raw = b.metrics_for_day(options[:userid], options[:date])
 elsif options[:type] == 'activities'
+  if not options[:token]
+    options[:token], options[:userid] = ApiAuth.new.login(options[:email], options[:password])
+  end
   raw = b.activities_for_day(options[:token], options[:date])
 else
   raw = $stdin.read
