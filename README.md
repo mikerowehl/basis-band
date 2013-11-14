@@ -1,6 +1,7 @@
 # Basis API Access Gem
 
 [![Gem Version](https://badge.fury.io/rb/basis-band.png)](http://badge.fury.io/rb/basis-band)
+[![Build Status](https://travis-ci.org/mikerowehl/basis-band.png)](https://travis-ci.org/mikerowehl/basis-band)
 
 Includes a command line tool that can be used to either capture the raw JSON
 responses from app.mybasis.com, or to convert the metrics from the API
